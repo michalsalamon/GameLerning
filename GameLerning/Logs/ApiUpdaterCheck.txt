@@ -88,3 +88,33 @@ C# parse time         : 342ms
 candidates check time : 58ms
 console write time    : 0ms
 
+[api-updater (non-obsolete-error-filter)] 18.03.2022 11:42:43 : Starting /Users/misiakow/Documents/Unity/2020.3.30f1/Unity.app/Contents/Tools/ScriptUpdater/APIUpdater.NonObsoleteApiUpdaterDetector.exe
+[api-updater (non-obsolete-error-filter)] 
+----------------------------------
+jit/startup time      : 320,769ms
+moved types parse time: 75ms
+candidates parse time : 1ms
+C# parse time         : 561ms
+candidates check time : 71ms
+console write time    : 2ms
+
+[api-updater (non-obsolete-error-filter)] 18.03.2022 13:20:17 : Starting /Users/misiakow/Documents/Unity/2020.3.30f1/Unity.app/Contents/Tools/ScriptUpdater/APIUpdater.NonObsoleteApiUpdaterDetector.exe
+[api-updater (non-obsolete-error-filter)] 
+----------------------------------
+jit/startup time      : 215,441ms
+moved types parse time: 89ms
+candidates parse time : 1ms
+C# parse time         : 457ms
+candidates check time : 53ms
+console write time    : 2ms
+
+[api-updater (non-obsolete-error-filter)] 18.03.2022 13:34:48 : Starting /Users/misiakow/Documents/Unity/2020.3.30f1/Unity.app/Contents/Tools/ScriptUpdater/APIUpdater.NonObsoleteApiUpdaterDetector.exe
+[api-updater (non-obsolete-error-filter)] 
+----------------------------------
+jit/startup time      : 192,597ms
+moved types parse time: 85ms
+candidates parse time : 3ms
+C# parse time         : 477ms
+candidates check time : 65ms
+console write time    : 2ms
+
