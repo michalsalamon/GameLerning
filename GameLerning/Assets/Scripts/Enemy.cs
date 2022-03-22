@@ -10,6 +10,8 @@ public class Enemy : LivingEntity
     private enum State {Idle, Chasing, Attacing };
     private State currentState;
 
+    [SerializeField]private ParticleSystem deathEffect;
+
     private NavMeshAgent pathfinder;
     private Transform target;
     private LivingEntity targetEntity;
@@ -124,5 +126,14 @@ public class Enemy : LivingEntity
             }
             yield return new WaitForSeconds(refreshRate);
         }
+    }
+
+    public override void TakeHit(float f_damage, Vector3 hitPoint, Vector3 hitDirection)
+    {
+        if (f_damage >= health)
+        {
+            Destroy(Instantiate(deathEffect.gameObject, hitPoint, Quaternion.FromToRotation(Vector3.forward, hitDirection)), deathEffect.main.startLifetimeMultiplier);
+        }
+        base.TakeHit(f_damage, hitPoint, hitDirection);
     }
 }
