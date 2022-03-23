@@ -5,6 +5,7 @@ using UnityEngine;
 public class Projectile : MonoBehaviour
 {
     [SerializeField] LayerMask collisionMask;
+    [SerializeField] private Color trailColor;
 
     private float targetSpeedCompensation = .1f;
     private float maxFlyDistance = 15;
@@ -24,6 +25,8 @@ public class Projectile : MonoBehaviour
         {
             OnHitObject(initialColliders[0], transform.position);
         }
+
+        GetComponent<TrailRenderer>().material.SetColor("_TintColor", trailColor);
     }
 
     void Update()
