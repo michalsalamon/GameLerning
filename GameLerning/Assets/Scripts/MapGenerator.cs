@@ -10,6 +10,7 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] private Transform tilePrefab;
     [SerializeField] private Transform obstaclePrefab;
     [SerializeField] private Transform navmeshMaskPrefab;
+    [SerializeField] private Transform mapFloor;
     [SerializeField] private Transform navmeshFloor;
     [SerializeField] private Vector2 maxMapSize;
 
@@ -23,6 +24,8 @@ public class MapGenerator : MonoBehaviour
     private Transform[,] tileMap;
 
     private Map currentMap;
+    public Map CurrentMap
+    { get { return currentMap; } }
 
     private void Start()
     {
@@ -44,8 +47,6 @@ public class MapGenerator : MonoBehaviour
         currentMap = maps[mapIndex];
         tileMap = new Transform[currentMap.mapSize.x, currentMap.mapSize.y];
         System.Random f_prng = new System.Random(currentMap.seed);
-        GetComponent<BoxCollider>().size = new Vector3(currentMap.mapSize.x * tileSize, .05f, currentMap.mapSize.y * tileSize);
-
 
         //Generaiting coords
         allTileCoords = new List<Coord>();
@@ -139,6 +140,8 @@ public class MapGenerator : MonoBehaviour
 
 
         navmeshFloor.localScale = new Vector3( maxMapSize.x, maxMapSize.y, 1) * tileSize;
+        mapFloor.localScale = new Vector3(currentMap.mapSize.x * tileSize, currentMap.mapSize.y * tileSize, 1);
+
     }
 
     private bool MapIsFullyAccessible(bool[,] f_obstacleMap, int f_currentObstacleCount)
@@ -179,7 +182,7 @@ public class MapGenerator : MonoBehaviour
         return f_targetAccessibleTileCount == f_accsessibleTileCount;
     }
 
-    private Vector3 CoordToPosition(int f_x, int f_y)
+    public Vector3 CoordToPosition(int f_x, int f_y)
     {
         return new Vector3(-currentMap.mapSize.x / 2f + 0.5f + f_x, 0, -currentMap.mapSize.y / 2f + 0.5f + f_y) * tileSize;
     }
@@ -245,7 +248,7 @@ public class MapGenerator : MonoBehaviour
         {
             get
             {
-                return new Coord(mapSize.x / 2, mapSize.y / 2);
+                return new Coord(Mathf.RoundToInt(mapSize.x / 2), Mathf.RoundToInt(mapSize.y / 2));
             }
         }
     }

@@ -28,25 +28,30 @@ public class Enemy : LivingEntity
 
     private bool hasTarget;
 
-    // Start is called before the first frame update
-    protected override void Start()
+    private void Awake()
     {
-        base.Start();
         pathfinder = GetComponent<NavMeshAgent>();
         if (GameObject.FindGameObjectWithTag("Player") != null)
         {
             target = GameObject.FindGameObjectWithTag("Player").transform;
             hasTarget = true;
             targetEntity = target.GetComponent<LivingEntity>();
-            targetEntity.OnDeath += OnTargetDeath;
             skinMaterial = GetComponent<Renderer>().material;
             originalColor = skinMaterial.color;
 
-            currentState = State.Chasing;
 
             myCollisionRadius = GetComponent<CapsuleCollider>().radius;
             targetCollisionRadius = target.GetComponent<CapsuleCollider>().radius;
+        }
+    }
+    protected override void Start()
+    {
+        base.Start();
+        if (hasTarget)
+        {
+            targetEntity.OnDeath += OnTargetDeath;
 
+            currentState = State.Chasing;
             StartCoroutine(UpdatePath());
         }
     }
@@ -126,6 +131,19 @@ public class Enemy : LivingEntity
             }
             yield return new WaitForSeconds(refreshRate);
         }
+    }
+
+    public void SetCharacteristics(float moveSpeed, int hitsToKillPlayer, float enemyHealth, Color skinColor)
+    {
+        pathfinder.speed = moveSpeed;
+        if (hasTarget)
+        {
+            damage = Mathf.RoundToInt(targetEntity.StartingHealth / hitsToKillPlayer);
+        }
+        startingHealth = enemyHealth;
+        skinMaterial = GetComponent<Renderer>().material;
+        skinMaterial.color = skinColor;
+        originalColor = skinMaterial.color;
     }
 
     public override void TakeHit(float f_damage, Vector3 hitPoint, Vector3 hitDirection)

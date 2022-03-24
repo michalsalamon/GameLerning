@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class PlayerInput : LivingEntity
 {
+    [SerializeField] private Crosshairs crosshairs;
+
     private Vector3 moveVector = Vector3.zero;
     private Vector3 moveVelocity;
     public Vector3 MoveVelocity
@@ -23,6 +25,7 @@ public class PlayerInput : LivingEntity
 
     private Camera viewCamera;
     private GunController gunController;
+    private MapGenerator map;
 
     protected override void Start()
     {
@@ -41,12 +44,19 @@ public class PlayerInput : LivingEntity
 
         //look input
         ray = viewCamera.ScreenPointToRay(Input.mousePosition);
-        Plane f_groundPlane = new Plane(Vector3.up, Vector3.zero);
+        Plane f_groundPlane = new Plane(Vector3.up, Vector3.up * gunController.GunHeight);
         float f_rayDistance;
+
         if (f_groundPlane.Raycast(ray, out f_rayDistance))
         {
             point = ray.GetPoint(f_rayDistance);
             //Debug.DrawLine(ray.origin, point, Color.red);
+            crosshairs.transform.position = point;
+            crosshairs.DetectTarget(ray);
+            if ((new Vector2(point.x, point.z) - new Vector2(transform.position.x, transform.position.z)).sqrMagnitude > 1)
+            {
+                gunController.Aim(point);
+            }
         }
 
         //weapon input
@@ -58,6 +68,11 @@ public class PlayerInput : LivingEntity
         if (Input.GetMouseButtonUp(0))
         {
             gunController.OnTriggerRelease();
+        }
+
+        if (Input.GetKeyDown (KeyCode.R))
+        {
+            gunController.Reload();
         }
     }
 }

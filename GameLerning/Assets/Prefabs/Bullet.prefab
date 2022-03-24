@@ -111,8 +111,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collisionMask:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 576
   trailColor: {r: 0.9056604, g: 0.54178506, b: 0.03844783, a: 0.2509804}
+  maxFlyDistance: 50
 --- !u!96 &6979263469268972122
 TrailRenderer:
   serializedVersion: 2

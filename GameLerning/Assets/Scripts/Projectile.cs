@@ -8,12 +8,10 @@ public class Projectile : MonoBehaviour
     [SerializeField] private Color trailColor;
 
     private float targetSpeedCompensation = .1f;
-    private float maxFlyDistance = 15;
+    [SerializeField] private float maxFlyDistance = 15;
     private float speed = 10;
     private float damage = 1;
     private float lifeTime;
-
-    
     
     private void Start()
     {
