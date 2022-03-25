@@ -42,6 +42,12 @@ public class Player : LivingEntity
         health = startingHealth;
     }
 
+    public override void Die()
+    {
+        AudioManager.instance.PlaySound("Player Death", transform.position);
+        base.Die();
+    }
+
     // Update is called once per frame
     void Update()
     {

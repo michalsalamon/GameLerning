@@ -705,6 +705,8 @@ MonoBehaviour:
   smoothRecoilTime: 0.1
   shell: {fileID: 8110521002875548245, guid: 27e0e3cf1b1de4bf9a206fab1344e91d, type: 3}
   shellEjector: {fileID: 7813011635297532397}
+  shootAudio: {fileID: 8300000, guid: 10e16d15a71e941bdab2e436c2d149fa, type: 3}
+  reloadAudio: {fileID: 8300000, guid: b240ab1d7874b41088c7f6b58557a816, type: 3}
 --- !u!114 &365088899113452057
 MonoBehaviour:
   m_ObjectHideFlags: 0
