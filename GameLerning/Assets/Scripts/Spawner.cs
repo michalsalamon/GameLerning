@@ -10,6 +10,8 @@ public class Spawner : MonoBehaviour
     [SerializeField] private Enemy enemy;
 
     private Wave currentWave;
+    public Wave CurrentWave
+    { get { return currentWave; } }
     int currentWaveNumber = 0;
 
     private int enemiesRemainigToSpawn;
@@ -49,7 +51,7 @@ public class Spawner : MonoBehaviour
     private void Start()
     {
 
-        playerEntity = FindObjectOfType<PlayerInput>();
+        playerEntity = FindObjectOfType<Player>();
         playerTransform = playerEntity.transform;
 
         nextCampCheckTime = timeBeatweenCampChecks + Time.time;

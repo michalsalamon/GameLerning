@@ -100,7 +100,7 @@ public class MapGenerator : MonoBehaviour
                 float f_obstacleHeight = Mathf.Lerp(currentMap.minObstacleHeight, currentMap.maxObstacleHeight, (float)f_prng.NextDouble());
                 Vector3 f_obstaclePosition = CoordToPosition(f_randomCoord.x, f_randomCoord.y);
 
-                Transform f_newObstacle = Instantiate(obstaclePrefab, f_obstaclePosition + Vector3.up * f_obstacleHeight * 0.5f * tileSize, Quaternion.identity);
+                Transform f_newObstacle = Instantiate(obstaclePrefab, f_obstaclePosition + Vector3.up * f_obstacleHeight * 0.5f, Quaternion.identity);
                 f_newObstacle.localScale = new Vector3((1 - outlinePercent) * tileSize, f_obstacleHeight, (1 - outlinePercent) * tileSize);
                 f_newObstacle.transform.parent = mapHolder;
 
@@ -122,21 +122,22 @@ public class MapGenerator : MonoBehaviour
         shuffledOpenTileCoords = new Queue<Coord>(Utility.ShuffleArray(allOpenCoords.ToArray(), currentMap.seed));
 
         //creating navmesh mask
+        float navmeshMaskHeight = 5;
         Transform f_maskLeft = Instantiate(navmeshMaskPrefab, Vector3.left * (currentMap.mapSize.x + maxMapSize.x) / 4f * tileSize, Quaternion.identity);
         f_maskLeft.parent = mapHolder;
-        f_maskLeft.localScale = new Vector3((maxMapSize.x - currentMap.mapSize.x) / 2f, 1, currentMap.mapSize.y) * tileSize;
+        f_maskLeft.localScale = new Vector3((maxMapSize.x - currentMap.mapSize.x) / 2f, navmeshMaskHeight, currentMap.mapSize.y) * tileSize;
 
         Transform f_maskRight = Instantiate(navmeshMaskPrefab, Vector3.right * (currentMap.mapSize.x + maxMapSize.x) / 4f * tileSize, Quaternion.identity);
         f_maskRight.parent = mapHolder;
-        f_maskRight.localScale = new Vector3((maxMapSize.x - currentMap.mapSize.x) / 2f, 1, currentMap.mapSize.y) * tileSize;
+        f_maskRight.localScale = new Vector3((maxMapSize.x - currentMap.mapSize.x) / 2f, navmeshMaskHeight, currentMap.mapSize.y) * tileSize;
 
         Transform f_maskTop = Instantiate(navmeshMaskPrefab, Vector3.forward * (currentMap.mapSize.y + maxMapSize.y) / 4f * tileSize, Quaternion.identity);
         f_maskTop.parent = mapHolder;
-        f_maskTop.localScale = new Vector3(maxMapSize.x, 1, (maxMapSize.y - currentMap.mapSize.y) / 2f) * tileSize;
+        f_maskTop.localScale = new Vector3(maxMapSize.x, navmeshMaskHeight, (maxMapSize.y - currentMap.mapSize.y) / 2f) * tileSize;
 
         Transform f_maskBottom = Instantiate(navmeshMaskPrefab, Vector3.back * (currentMap.mapSize.y + maxMapSize.y) / 4f * tileSize, Quaternion.identity);
         f_maskBottom.parent = mapHolder;
-        f_maskBottom.localScale = new Vector3(maxMapSize.x, 1, (maxMapSize.y - currentMap.mapSize.y) / 2f) * tileSize;
+        f_maskBottom.localScale = new Vector3(maxMapSize.x, navmeshMaskHeight, (maxMapSize.y - currentMap.mapSize.y) / 2f) * tileSize;
 
 
         navmeshFloor.localScale = new Vector3( maxMapSize.x, maxMapSize.y, 1) * tileSize;

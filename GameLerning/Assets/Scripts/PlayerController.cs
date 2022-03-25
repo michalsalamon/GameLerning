@@ -2,17 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent (typeof (PlayerInput))]
+[RequireComponent (typeof (Player))]
 [RequireComponent (typeof (Rigidbody))]
 
 public class PlayerController : MonoBehaviour
 {
-    private PlayerInput playerInput;
+    private Player playerInput;
     private Rigidbody RB;
 
     private void Awake()
     {
-        playerInput = GetComponent<PlayerInput>();
+        playerInput = GetComponent<Player>();
         RB = GetComponent<Rigidbody>();
     }
 

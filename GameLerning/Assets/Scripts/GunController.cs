@@ -5,7 +5,7 @@ using UnityEngine;
 public class GunController : MonoBehaviour
 {
     [SerializeField] private Transform weaponHold;
-    [SerializeField] private Gun startingGun;
+    [SerializeField] private Gun[] guns;
 
     private Gun equippedGun;
 
@@ -14,20 +14,23 @@ public class GunController : MonoBehaviour
 
     private void Start()
     {
-        if (startingGun != null)
+        if (guns.Length > 0)
         {
-            EquipGun(startingGun);
+            EquipGun(1);
         }
     }
 
-    public void EquipGun(Gun f_gunToExuip)
+    public void EquipGun(int number)
     {
-        if (equippedGun != null)
+        if (guns.Length >= number)
         {
-            Destroy(equippedGun.gameObject);
+            if (equippedGun != null)
+            {
+                Destroy(equippedGun.gameObject);
+            }
+            equippedGun = Instantiate(guns[number - 1], weaponHold.position, weaponHold.rotation);
+            equippedGun.transform.parent = weaponHold;
         }
-        equippedGun = Instantiate(f_gunToExuip, weaponHold.position, weaponHold.rotation);
-        equippedGun.transform.parent = weaponHold;
     }
 
     public void OnTriggerHold()

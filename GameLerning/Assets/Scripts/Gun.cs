@@ -31,7 +31,7 @@ public class Gun : MonoBehaviour
 
     private float nextShotTime;
 
-    private bool triggerReleasedSinceLastShot;
+    private bool triggerReleasedSinceLastShot = true;
     private int shotsRemainingInBurst;
     private int projectilesRemainingInMag;
     private bool isReloading;
@@ -96,7 +96,10 @@ public class Gun : MonoBehaviour
 
     public void Reload()
     {
-        StartCoroutine(AnimateReload());
+        if (!isReloading && projectilesRemainingInMag != projectilesPerMag)
+        {
+            StartCoroutine(AnimateReload());
+        }
     }
 
     IEnumerator AnimateReload()
@@ -109,7 +112,7 @@ public class Gun : MonoBehaviour
         Vector3 initialRot = transform.localEulerAngles;
         float maxReloadAngle = 60;
 
-        while (percent < 0)
+        while (percent < 1)
         {
             percent += Time.deltaTime * reloadSpeed;
             float interpolation = (-Mathf.Pow(percent, 2) + percent) * 4;
@@ -125,7 +128,10 @@ public class Gun : MonoBehaviour
 
     public void Aim(Vector3 aimPoint)
     {
-        transform.LookAt(aimPoint);
+        if (!isReloading)
+        {
+            transform.LookAt(aimPoint);
+        }
     }
 
     public void OnTriggerHold()
