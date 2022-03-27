@@ -11,6 +11,7 @@ public class Enemy : LivingEntity
     private State currentState;
 
     [SerializeField]private ParticleSystem deathEffect;
+    public static event System.Action OnDeathStatic;
 
     private NavMeshAgent pathfinder;
     private Transform target;
@@ -151,6 +152,10 @@ public class Enemy : LivingEntity
     {
         if (f_damage >= health)
         {
+            if (OnDeathStatic != null)
+            {
+                OnDeathStatic();
+            }
             AudioManager.instance.PlaySound("Enemy Death", transform.position);
             Destroy(Instantiate(deathEffect.gameObject, hitPoint, Quaternion.FromToRotation(Vector3.forward, hitDirection)), deathEffect.main.startLifetimeMultiplier);
         }

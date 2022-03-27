@@ -34,7 +34,6 @@ public class Menu : MonoBehaviour
 
     public void Play()
     {
-        AudioManager.instance.PlayMusic(AudioManager.instance.mainTheme, 2);
         SceneManager.LoadScene("Game");
     }
 

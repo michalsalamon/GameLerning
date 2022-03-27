@@ -12,8 +12,12 @@ public class GameUI : MonoBehaviour
     [SerializeField] private RectTransform newWaveBanner;
     [SerializeField] private Text newWaveTitle;
     [SerializeField] private Text enemyInWave;
+    [SerializeField] private Text scoreDisplay;
+    [SerializeField] private Text gameOverScoreDisplay;
+    [SerializeField] private RectTransform healthBar;
 
     private Spawner spawner;
+    private Player player;
 
     private void Awake()
     {
@@ -24,7 +28,20 @@ public class GameUI : MonoBehaviour
 
     private void Start()
     {
-        FindObjectOfType<Player>().OnDeath += OnGameOver;
+        player = FindObjectOfType<Player>();
+        player.OnDeath += OnGameOver;
+    }
+
+    private void Update()
+    {
+        scoreDisplay.text = ScoreKeeper.score.ToString("D6");
+
+        float healthPercent = 0;
+        if (player != null)
+        {
+            healthPercent = player.health / player.StartingHealth;
+        }
+        healthBar.localScale = new Vector3(healthPercent, 1, 1);
     }
 
     private void OnNewWave(int waveNumber)
@@ -44,6 +61,8 @@ public class GameUI : MonoBehaviour
         float speed = 1.5f;
         float animationPercent = 0;
         int dir = 1;
+        float startPos = newWaveBanner.anchoredPosition.y;
+        float endPos = startPos + 400;
 
         float endDelayTime = Time.time + 1 / speed + delayTime;
 
@@ -59,7 +78,7 @@ public class GameUI : MonoBehaviour
                 }
             }
 
-            newWaveBanner.anchoredPosition = Vector2.up * Mathf.Lerp(-1070, -650, animationPercent);
+            newWaveBanner.anchoredPosition = Vector2.up * Mathf.Lerp(startPos, endPos, animationPercent);
 
             yield return null;
         }
@@ -67,7 +86,10 @@ public class GameUI : MonoBehaviour
 
     void OnGameOver()
     {
-        StartCoroutine(Fade(Color.clear, Color.black, 1));
+        StartCoroutine(Fade(Color.clear, new Color(0, 0, 0, 0.95f), 1));
+        gameOverScoreDisplay.text = scoreDisplay.text;
+        scoreDisplay.gameObject.SetActive(false);
+        healthBar.transform.parent.gameObject.SetActive(false);
         gameOverUI.SetActive(true);
     }
 
@@ -88,5 +110,10 @@ public class GameUI : MonoBehaviour
     public void StartNewGame()
     {
         SceneManager.LoadScene("Game");
+    }
+
+    public void ReturnToMainMenu()
+    {
+        SceneManager.LoadScene("Menu");
     }
 }

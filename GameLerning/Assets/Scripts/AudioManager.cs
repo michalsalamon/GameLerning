@@ -1,13 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class AudioManager : MonoBehaviour
 {
     public enum AudioChannel { Master, Sfx, Music};
 
-    [SerializeField] public AudioClip mainTheme;
-    [SerializeField] public AudioClip menuTheme;
+    public AudioClip mainTheme;
+    public AudioClip menuTheme;
 
     public float masterVolumePercent { get; private set; }
     public float sfxVolumePercent { get; private set; }
@@ -16,6 +17,7 @@ public class AudioManager : MonoBehaviour
     AudioSource sfx2DSource;
     AudioSource[] musicSources;
     int activeMusicSourceIndex = 0;
+    private string sceneName;
 
     private Transform audioListener;
     private Transform player;
@@ -45,15 +47,15 @@ public class AudioManager : MonoBehaviour
         sfx2DSource = newsfx2DSource.AddComponent<AudioSource>();
 
         audioListener = FindObjectOfType<AudioListener>().transform;
-        if (FindObjectOfType<Player>() != null)
-        {
-            player = FindObjectOfType<Player>().transform;
-        }
         library = GetComponent<SoundLibrary>();
 
         masterVolumePercent = PlayerPrefs.GetFloat("master vol", 1);
         sfxVolumePercent =  PlayerPrefs.GetFloat("sfx vol", 1);
         musicVolumePercent = PlayerPrefs.GetFloat("music vol", 1);
+
+        sceneName = SceneManager.GetActiveScene().name;
+
+        OnSceneLoad();
     }
 
     private void Start()
@@ -66,6 +68,15 @@ public class AudioManager : MonoBehaviour
         if (player != null)
         {
             audioListener.position = player.position;
+        }
+
+        if (sceneName != SceneManager.GetActiveScene().name)
+        {
+            OnSceneLoad();
+
+            sceneName = SceneManager.GetActiveScene().name;
+            ChangeMusic();
+
         }
     }
 
@@ -134,6 +145,33 @@ public class AudioManager : MonoBehaviour
     public void PlaySound2D(string soundName)
     {
         sfx2DSource.PlayOneShot(library.GetClipFromName(soundName), sfxVolumePercent * masterVolumePercent);
+    }
+
+    public void OnSceneLoad()
+    {
+        if (FindObjectOfType<Player>() != null)
+        {
+            player = FindObjectOfType<Player>().transform;
+        }
+    }
+
+    private void ChangeMusic()
+    {
+        AudioClip clipToPlay = null;
+
+        if (sceneName == "Menu")
+        {
+            clipToPlay = menuTheme;
+        }
+        else if (sceneName == "Game")
+        {
+            clipToPlay = mainTheme;
+        }
+
+        if (clipToPlay != null)
+        {
+            PlayMusic(clipToPlay, 2);
+        }
     }
 
 }

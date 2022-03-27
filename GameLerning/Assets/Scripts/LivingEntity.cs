@@ -7,7 +7,7 @@ public class LivingEntity : MonoBehaviour, IDamageable
     [SerializeField] protected float startingHealth = 4;
     public float StartingHealth
     { get { return startingHealth; } }
-    protected float health;
+    public float health { get; protected set; }
     protected bool dead = false;
 
     protected virtual void Start()

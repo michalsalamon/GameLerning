@@ -73,6 +73,11 @@ public class Player : LivingEntity
             }
         }
 
+        if (transform.position.y < -10)
+        {
+            TakeDamage(health);
+        }
+
         //weapon input
         if (Input.GetMouseButton(0))
         {
